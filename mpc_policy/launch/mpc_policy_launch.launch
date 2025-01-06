@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="mpc_aware" pkg="depth_map_process" type="RBF_Target" output="screen">
+    <!--param name="cx" value="320.5">
+    <param name="cy" value="180.5">
+    <param name="fx" value="554.254691191187">
+    <param name="fy" value="554.254691191187"-->
+    <param name="cam_intr" type="string" value="320.5 180.2 554.254691191187 554.254691191187"/>
+    <param name="cam_pose" value="0.1 0 0 0 0 0"/>
+  </node>	
+  <node name="mpc_aware_control" pkg="mpc_policy" type="mpc_avoidance" output="screen">
+  </node>
+  <node pkg="rosbag" type="record" name="vel_record" args="iris_0/mavros/local_position/velocity_local iris_0/mavros/local_position/velocity_local -o /home/uav/catkin_ws/src/MPC_aware/mpc_policy/record_bag/vel.bag">
+  <param name="use_sim_time" value="true" />
+  </node>
+  <node pkg="rosbag" type="record" name="set_vel_record" args="iris_0/mavros/setpoint_velocity/cmd_vel_unstamped iris_0/mavros/setpoint_velocity/cmd_vel_unstamped -o /home/uav/catkin_ws/src/MPC_aware/mpc_policy/record_bag/desired_vel.bag">
+  <param name="use_sim_time" value="true" />
+  </node>
+  <node pkg="rosbag" type="record" name="pose_record" args="iris_0/mavros/vision_pose/pose iris_0/mavros/vision_pose/pose -o /home/uav/catkin_ws/src/MPC_aware/mpc_policy/record_bag/pose.bag"/>
+</launch>
